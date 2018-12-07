@@ -1,11 +1,11 @@
 version: '2'
 services:
-  app:
-    build: .
+  node:
+    build: ./server
     command: npm start 
     volumes:
-      - .:/usr/app/
-      - /usr/app/node_modules
+      - ./server:/usr/app/
+      - ./server:/usr/app/node_modules
     ports:
       - "3005:8080"
     tty: true
@@ -13,8 +13,15 @@ services:
       - postgres
     environment:
       DATABASE_URL: postgres://todoapp@postgres/todos
+  client:
+    build: ./client
+    ports:
+      - "3004:3000"
+    links:
+      - node
+    command: npm start
   postgres:
     image: postgres:9.6.2-alpine
     environment:
-      POSTGRES_USER: todoapp
-      POSTGRES_DB: todos
+      POSTGRES_USER: www-data
+      POSTGRES_DB: webapp
