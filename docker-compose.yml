@@ -4,8 +4,8 @@ services:
     build: ./server
     command: npm start 
     volumes:
-      - ./server:/usr/app/
-      - ./server:/usr/app/node_modules
+      - ./server:/app
+      - ./server:/app/node_modules
     ports:
       - "3005:8080"
     tty: true
@@ -15,10 +15,12 @@ services:
       DATABASE_URL: postgres://todoapp@postgres/todos
   client:
     build: ./client
+    volumes:
+      - ./client:/app/client
     ports:
       - "3004:3000"
-    links:
-      - node
+    environment:
+       - CHOKIDAR_USEPOLLING=true
     command: npm start
   postgres:
     image: postgres:9.6.2-alpine
