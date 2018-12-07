@@ -1,0 +1,22 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
+    "koa": "^2.6.2",
+    "koa-router": "^7.4.0",
+    "node": "^11.3.0",
+    "nodejs": "^0.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node test/index.test.js",
+    "start": "node koa-app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
