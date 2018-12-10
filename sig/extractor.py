@@ -16,15 +16,16 @@ class Extractor:
         self.schemas = []
         self.tables = {}
         # pg connexion
-        conn = psycopg2.connect(dbname="gis", user="docker", password="docker", host="db")
-        self.cur = conn.cursor()
+        self.conn = psycopg2.connect(dbname="gis", user="docker", password="docker", host="db")
+        self.cur = self.conn.cursor()
 
 
     def get_files_by_format(self, format):
         logging.info('Started')
         for subdir, dirs, files in os.walk(self.working_dir):
             # lower and remove spaces
-            schema = ''.join(s.lower() for s in os.path.basename(subdir) if not s.isspace())
+            if subdir is None: continue
+            schema = ''.join(s.lower() for s in os.path.basename(subdir) if os.path.basename(subdir) and not s.isspace())
             self.schemas.append(schema)
             for file in files:
                if file.endswith(".{}".format(format)):
@@ -57,4 +58,5 @@ class Extractor:
         return 'CREATE SCHEMA {}'.format(schema)
 
     def _push_to_database(self, query):
-        self.cur.commit(query)
+        self.cur.execute(query)
+        self.conn.commit()
