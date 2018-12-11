@@ -1,3 +1,0 @@
-[submodule "sig/gsconfig"]
-	path = sig/gsconfig
-	url = https://github.com/boundlessgeo/gsconfig
