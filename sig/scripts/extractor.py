@@ -45,14 +45,36 @@ class Extractor:
         self._commit_to_database()
 
 
-    def connect_geoserver(self):
-        self.cat = Catalog(config.GSREST,username=config.GSUSER, password=config.GSPASSWORD)
+    def gs_connect_geoserver(self):
+        self.cat = Catalog(config.GSREST, username=config.GSUSER, password=config.GSPASSWORD)
 
-    def create_workspace(self, ws):
-        self.cat.create_workspace(ws)
+    def gs_create_workspace(self, ws):
+        if self.cat.get_workspace(ws): logging.info('workspace {} exists skipping...'.format(ws))
+        else: self.cat.create_workspace(ws)
 
-    def create_stores(self, store):
-        self.cat.create_store(ws)
+    def gs_get_data_store(self, store):
+        return self.cat.get_store(store)
+
+    def gs_create_store(self, schema, workspace_name):
+        try:
+            self.cat.get_store(schema)
+        except:
+            ds = self.cat.create_datastore(schema, workspace_name)
+            ds.connection_parameters.update({
+                'host': config.PGHOST,
+                'port':config.PGPORT,
+                'database': config.PGDATABASE,
+                'user': config.PGUSER,
+                'passwd': config.PGPASSWORD, 'dbtype':'postgis',
+                'schema': schema,
+                'Expose primary keys': 'true'
+            })
+            self.cat.save(ds)
+
+    def gs_publish_feature_type(self, table, store_name):
+        data_store = self.gs_get_data_store(store_name)
+        self.cat.publish_featuretype(table, data_store, 'EPSG:2154', srs='EPSG:2154')
+
 
     @staticmethod
     def insert_data_from_shapefile(table, **kwargs):
@@ -77,5 +99,5 @@ class Extractor:
         except:
             self.conn.commit()
 
-    def _commit_to_database(self):
+    def commit_to_database(self):
         self.conn.commit()
