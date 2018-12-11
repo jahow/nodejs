@@ -17,12 +17,10 @@ def import_topo_to_postgis(path):
 def import_to_geoserver(bd_topo_extractor):
     workspace_name = 'bd_topo_ign'
     bd_topo_extractor.gs_connect_geoserver()
-    ds = bd_topo_extractor.gs_create_workspace(workspace_name)
     # create stores == schemas
     for schema in bd_topo_extractor.schemas:
         bd_topo_extractor.gs_create_store(schema, workspace_name)
     for table in bd_topo_extractor.tables:
-        import ipdb ; ipdb.set_trace()
         bd_topo_extractor.gs_publish_feature_type(table, bd_topo_extractor.tables[table]['schema'])
 
 
