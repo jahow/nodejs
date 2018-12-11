@@ -18,7 +18,7 @@ class Extractor:
         self.tables = {}
         # pg connexion
         self.conn = psycopg2.connect\
-            (dbname=config.PGDATABASE, user=config.GSUSER,
+            (dbname=config.PGDATABASE, user=config.PGUSER,
              password=config.PGPASSWORD, host=config.PGHOST)
         self.cur = self.conn.cursor()
         self.sql_commands = []
@@ -30,9 +30,8 @@ class Extractor:
         logging.info('Started')
         for subdir, dirs, files in os.walk(self.working_dir):
             # lower and remove spaces
-            if not subdir: continue
             schema = ''.join(s.lower() for s in os.path.basename(subdir) if os.path.basename(subdir) and not s.isspace())
-            self.schemas.append(schema)
+            if schema != '': self.schemas.append(schema)
             for file in files:
                if file.endswith(".{}".format(format)):
                     table_name = ''.join(s.lower() for s in file if not s.isspace())
