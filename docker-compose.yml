@@ -113,8 +113,14 @@ services:
        condition: service_healthy
 
   gistools:
+    tty: true
+    stdin_open: true
     build: ./sig
     volumes:
       - ./sig:/app/sig
     entrypoint: /app/sig/entrypoint.sh
-    tty: true
+    depends_on:
+      db:
+        condition: service_healthy
+      geoserver:
+        condition: service_healthy
