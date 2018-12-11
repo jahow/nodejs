@@ -24,13 +24,11 @@ services:
   client:
     build: ./client
     volumes:
-      - ./client:/app/client
+      - ./client/angular-docker:/app/client
     ports:
-      - "3004:3000"
-    environment:
-       - CHOKIDAR_USEPOLLING=true
-    entrypoint: /app/client/entrypoint.sh
+      - "4004:4200"
     tty: true
+    command: ng serve --host 0.0.0.0 #
 
   db:
     image: kartoza/postgis:9.6-2.4
