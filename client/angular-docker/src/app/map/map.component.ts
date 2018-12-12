@@ -7,7 +7,7 @@ import OlView from 'ol/View';
 import TileWMS from 'ol/source/TileWMS';
 import {defaults as defaultControls, ScaleLine} from 'ol/control.js';
 import { fromLonLat } from 'ol/proj';
-
+import Geocoder from 'ol-geocoder'
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -23,6 +23,7 @@ export class MapComponent implements OnInit {
   wms: OlTileLayer;
 
   ngOnInit() {
+    // layers
     this.wms = new OlTileLayer({
       source: new TileWMS({
         url: 'http://localhost:8600/geoserver/wms',
@@ -39,6 +40,7 @@ export class MapComponent implements OnInit {
       source: this.source
     });
 
+    // map and view
     this.view = new OlView({
       center: fromLonLat([2.35, 48.85]),
       zoom: 11
@@ -51,6 +53,28 @@ export class MapComponent implements OnInit {
       target: 'map',
       layers: [this.layer, this.wms],
       view: this.view
+    });
+
+    //controls
+    let geocoder = new Geocoder('nominatim', {
+      provider: 'osm',
+      lang: 'fr-FR',
+      autoComplete: true,
+      autoCompleteMinLength: 3,
+      placeholder: 'Osm serach ...',
+      targetType: 'text-input',
+      limit: 5,
+      keepOpen: true
+    });
+
+    this.map.addControl(geocoder);
+    geocoder.on('addresschosen', function(evt){
+      let feature = evt.feature,
+        coord = evt.coordinate,
+        address = evt.address;
+      // some popup solution
+      //alert('zoomed to '+ coord)
+
     });
   }
 }
