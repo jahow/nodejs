@@ -34,5 +34,9 @@ Then execute the following:
 Geoserver:
 http://localhost:8600/geoserver/web/
 
+Data:
+http://localhost:8600/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities
+
+
 Angular:
 http://localhost:4004/
