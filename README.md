@@ -1,9 +1,38 @@
 
 
+###Information
 
-docker-compose build
+Application with :
 
-docker-compose up
+- postgres/postgis
+- geoserver
+- gistools
+- angular 7
 
 
-npx create-react-app
+###Installation
+
+Build application:
+
+`docker-compose build`
+
+Start application:
+
+`docker-compose up`
+
+###Insert Data into postgis & geoserver
+
+copy the data dir into `/sig`
+
+Then execute the following:
+
+`sudo docker exec -ti nodejs_gistools_1 python /app/sig/scripts/import_data.py`
+
+
+###Links
+
+Geoserver:
+http://localhost:8600/geoserver/web/
+
+Angular:
+http://localhost:4004/
