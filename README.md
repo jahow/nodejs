@@ -1,6 +1,6 @@
 
 
-###Information
+### Information
 
 Application with :
 
@@ -10,7 +10,7 @@ Application with :
 - angular 7
 
 
-###Installation
+### Installation
 
 Build application:
 
@@ -20,7 +20,7 @@ Start application:
 
 `docker-compose up`
 
-###Insert Data into postgis & geoserver
+### Insert Data into postgis & geoserver
 
 copy the data dir into `/sig`
 
@@ -29,7 +29,7 @@ Then execute the following:
 `sudo docker exec -ti nodejs_gistools_1 python /app/sig/scripts/import_data.py`
 
 
-###Links
+### Links
 
 Geoserver:
 http://localhost:8600/geoserver/web/
