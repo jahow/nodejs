@@ -61,7 +61,7 @@ export class MapComponent implements OnInit {
       lang: 'fr-FR',
       autoComplete: true,
       autoCompleteMinLength: 3,
-      placeholder: 'Osm serach ...',
+      placeholder: 'Who are we to judge ...',
       targetType: 'text-input',
       limit: 5,
       keepOpen: true
