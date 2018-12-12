@@ -99,7 +99,6 @@ services:
 
   gistools:
     tty: true
-    stdin_open: true
     build: ./sig
     volumes:
       - ./sig:/app/sig
