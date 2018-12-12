@@ -7,27 +7,12 @@ volumes:
    geo-db-data:
 
 services:
-  node:
-    build: ./server
-    command: npm start 
-    volumes:
-      - ./server:/app
-      - ./server:/app/node_modules
-    ports:
-      - "3005:8082"
-    tty: true
-    depends_on:
-      - db
-    environment:
-      DATABASE_URL: postgres://todoapp@postgres/todos
-
   client:
     build: ./client
     volumes:
-      - ./client/angular-docker:/app/client
+      - ./client/angular-docker:/app/client/
     ports:
       - "4004:4200"
-    tty: true
     command: ng serve --host 0.0.0.0 #
 
   db:
@@ -39,6 +24,8 @@ services:
     env_file:
     - sig/env/geogig-db.env
     restart: on-failure
+    logging:
+      driver: none
     healthcheck:
       test: "exit 0"
 
@@ -117,8 +104,3 @@ services:
     volumes:
       - ./sig:/app/sig
     entrypoint: /app/sig/entrypoint.sh
-    depends_on:
-      db:
-        condition: service_healthy
-      geoserver:
-        condition: service_healthy
