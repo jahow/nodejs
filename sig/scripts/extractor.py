@@ -42,7 +42,7 @@ class Extractor:
         for schema in self.schemas:
             if schema == '': continue
             self._push_to_database(self._build_create_schema_query(schema))
-        self._commit_to_database()
+        self.commit_to_database()
 
 
     def gs_connect_geoserver(self):
@@ -72,8 +72,10 @@ class Extractor:
             self.cat.save(ds)
 
     def gs_publish_feature_type(self, table, store_name):
-        data_store = self.gs_get_data_store(store_name)
-        self.cat.publish_featuretype(table, data_store, 'EPSG:2154', srs='EPSG:2154')
+        try:
+            data_store = self.gs_get_data_store(store_name)
+        except:
+            self.cat.publish_featuretype(table, data_store, 'EPSG:2154', srs='EPSG:2154')
 
 
     @staticmethod
@@ -81,8 +83,8 @@ class Extractor:
         schema = kwargs['schema']
         path = kwargs['path']
         cmd = 'shp2pgsql -s {} {} "{}"."{}" | ' \
-              'psql -h {} -d {} -U {} -W'.format(
-            EPSG, path, schema, table, config.PGHOST, config.PGDATABASE, config.PGUSER)
+              'PGPASSWORD={} psql -h {} -d {} -U {}'.format(
+            EPSG, path, schema, table, config.PGPASSWORD, config.PGHOST, config.PGDATABASE, config.PGUSER)
         subprocess.call(cmd, shell=True)
 
     @staticmethod
@@ -94,10 +96,8 @@ class Extractor:
         return 'CREATE SCHEMA {};'.format(schema)
 
     def _push_to_database(self, query):
-        try:
-            self.cur.execute(query)
-        except:
-            self.conn.commit()
+        self.cur.execute(query)
+
 
     def commit_to_database(self):
         self.conn.commit()

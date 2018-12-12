@@ -6,9 +6,9 @@ def import_topo_to_postgis(path):
     into the postgis database'''
     bd_topo_extractor = extractor.Extractor(path)
     bd_topo_extractor.get_files_by_format('shp')
-    #bd_topo_extractor.bulk_create()
-    #for shapefile in bd_topo_extractor.tables:
-    #    bd_topo_extractor.insert_data_from_shapefile(shapefile, **bd_topo_extractor.tables[shapefile])
+    bd_topo_extractor.bulk_create()
+    for shapefile in bd_topo_extractor.tables:
+        bd_topo_extractor.insert_data_from_shapefile(shapefile, **bd_topo_extractor.tables[shapefile])
 
     #bd_topo_extractor.commit_to_database()
     import_to_geoserver(bd_topo_extractor)
