@@ -7,7 +7,7 @@ Application with :
 - postgres/postgis
 - geoserver
 - gistools
-- angular 7
+- angular 7 through node 10
 
 
 ### Installation
